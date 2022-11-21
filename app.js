@@ -9,12 +9,15 @@ app.use(express.urlencoded());
 app.use(express.json());
 app.use(cors());
 
-require("./database/databaseConnnection");
+require("./database/databaseConnection");
 
-// app.use(
-//   "/public/uploads/",
-//   express.static(path.join(__dirname, "/public/uploads/"))
-// );
+app.use("/images", express.static(path.join(__dirname, "/images")));
+app.use("/files", express.static(path.join(__dirname, "/files")));
+
+app.use("/user", require("./routes/userRoutes"));
+app.use("/freelancer", require("./routes/freelancerRoutes"));
+app.use("/client", require("./routes/clientRoutes"));
+app.use("/otp", require("./routes/otpRoutes"));
 
 app.listen(90, () => {
   console.log("Listening at port 90.");
