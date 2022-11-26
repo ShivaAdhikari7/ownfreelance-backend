@@ -12,10 +12,9 @@ const addClientInfo = async (req, res) => {
       headline,
       skills,
       scope,
-      workDuration,
-      experienceLevel,
       hourlyRate,
       description,
+      requiredJobTitle,
     } = req.body;
 
     const file = req.file;
@@ -25,9 +24,8 @@ const addClientInfo = async (req, res) => {
       !headline ||
       !skills ||
       !scope ||
-      !workDuration ||
-      !experienceLevel ||
-      !description
+      !description ||
+      !requiredJobTitle
     ) {
       res.status(400);
       throw new Error("Please fill the required fields.");
@@ -40,20 +38,19 @@ const addClientInfo = async (req, res) => {
     let fileUrl;
     if (file) {
       const fileName = file.filename;
-      const basePath = `${req.protocol}://${req.get("host")}/images/`;
+      const basePath = `${req.protocol}://${req.get("host")}/files/`;
       fileUrl = basePath + fileName;
     }
 
     const data = await Client.create({
       userType,
       headline,
-      scope,
+      scope: JSON.parse(scope),
       skills: JSON.parse(skills),
       hourlyRate: hourlyRate,
-      experienceLevel,
-      workDuration: JSON.parse(workDuration),
       projectDescriptionFile: fileUrl,
-      description: JSON.parse(description),
+      description,
+      requiredJobTitle,
       userId: req.user.id,
     });
 

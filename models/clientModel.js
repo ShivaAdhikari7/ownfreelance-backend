@@ -11,25 +11,19 @@ const Client = new mongoose.Schema({
   },
   skills: [{}],
   scope: {
-    type: String,
-    required: true,
-  },
-  workDuration: {
-    from: {
+    projectSize: {
       type: String,
       required: true,
     },
-    to: {
+    projectDuration: {
+      type: String,
+      required: true,
+    },
+    projectExperienceLevel: {
       type: String,
       required: true,
     },
   },
-
-  experienceLevel: {
-    type: String,
-    required: true,
-  },
-
   projectDescriptionFile: {
     type: String,
     required: true,
@@ -42,7 +36,10 @@ const Client = new mongoose.Schema({
     type: String,
     required: true,
   },
-
+  requiredJobTitle: {
+    type: String,
+    required: true,
+  },
   userId: {
     type: mongoose.Types.ObjectId,
     required: true,
