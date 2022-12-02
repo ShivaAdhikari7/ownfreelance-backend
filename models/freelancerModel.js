@@ -34,8 +34,9 @@ const Freelancer = new mongoose.Schema({
       required: true,
     },
   },
-  userId: {
-    type: mongoose.Types.ObjectId,
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User",
     required: true,
   },
 });
