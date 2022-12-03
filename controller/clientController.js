@@ -1,4 +1,5 @@
 const Client = require("../models/clientModel");
+const APIFeatures = require("../utils/apiFeatures");
 
 const addClientInfo = async (req, res) => {
   try {
@@ -63,4 +64,32 @@ const addClientInfo = async (req, res) => {
   }
 };
 
-module.exports = { addClientInfo };
+const getAllClients = async (req, res) => {
+  try {
+    const features = new APIFeatures(
+      Client.find().populate({
+        path: "userId",
+        select: "-password -verified",
+      }),
+      req.query
+    );
+
+    features.filter().sort().limitFields().paginate();
+
+    const clients = await features.query;
+    res.status(200).json({
+      status: "success",
+      data: {
+        result: clients.length,
+        clients,
+      },
+    });
+  } catch (err) {
+    res.status(200).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+};
+
+module.exports = { addClientInfo, getAllClients };
