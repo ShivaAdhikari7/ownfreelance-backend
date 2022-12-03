@@ -89,13 +89,13 @@ const getUserInfo = async (req, res) => {
 
     let user;
     user = await Freelancer.findOne({ userId: req.user._id }).populate({
-      path: "user",
+      path: "userId",
       select: "-password -verified",
     });
 
     if (!user) {
       user = await Client.findOne({ userId: req.user._id }).populate({
-        path: "user",
+        path: "userId",
         select: "-password -verified",
       });
     }

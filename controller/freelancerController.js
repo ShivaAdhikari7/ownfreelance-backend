@@ -1,4 +1,5 @@
 const Freelancer = require("../models/freelancerModel");
+const APIFeatures = require("../utils/apiFeatures");
 
 const addFreelancerInfo = async (req, res) => {
   try {
@@ -67,4 +68,32 @@ const addFreelancerInfo = async (req, res) => {
   }
 };
 
-module.exports = { addFreelancerInfo };
+const getAllFreelancers = async (req, res) => {
+  try {
+    const features = new APIFeatures(
+      Freelancer.find().populate({
+        path: "userId",
+        select: "-password -verified",
+      }),
+      req.query
+    );
+
+    features.filter().sort().limitFields().paginate();
+
+    const freealncers = await features.query;
+    res.status(200).json({
+      status: "success",
+      data: {
+        result: freealncers.length,
+        freealncers,
+      },
+    });
+  } catch (err) {
+    res.status(200).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+};
+
+module.exports = { addFreelancerInfo, getAllFreelancers };

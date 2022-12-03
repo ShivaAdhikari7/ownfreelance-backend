@@ -3,9 +3,13 @@ const router = new express.Router();
 
 const upload = require("../uploads/imageUpload");
 const { userGuard } = require("../auth/auth");
-const { addFreelancerInfo } = require("../controller/freelancerController");
+const {
+  addFreelancerInfo,
+  getAllFreelancers,
+} = require("../controller/freelancerController");
 
 // Customer Register
+router.route("/").get(getAllFreelancers);
 router.route("/add").post(userGuard, upload.single("img"), addFreelancerInfo);
 
 module.exports = router;
