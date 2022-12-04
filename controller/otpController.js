@@ -1,20 +1,21 @@
 const nodemailer = require("nodemailer");
 const User = require("../models/userModel");
 
-let otp = Math.floor(Math.random() * 9000 + 1000);
+let otp = 0;
 let email;
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
 
   auth: {
-    user: "dikshakpoudel34@gmail.com",
-    pass: "lvslpiajqzxyguoi",
+    user: "dikshakpoudel76@gmail.com",
+    pass: "vjpiiwhjchjnzvot",
   },
 });
 
 const sendOtp = (req, res) => {
   email = req.user.email;
+  otp = Math.floor(Math.random() * 9000 + 1000);
 
   const mailOptions = {
     from: "dikshakpoudel34@gmail.com",
@@ -25,6 +26,7 @@ const sendOtp = (req, res) => {
 
   transporter.sendMail(mailOptions, (err, _info) => {
     if (err) {
+      console.log(err);
       return res.send({ msg: "Error while sending OTP code." });
     }
   });

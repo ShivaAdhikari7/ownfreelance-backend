@@ -80,12 +80,12 @@ const getAllFreelancers = async (req, res) => {
 
     features.filter().sort().limitFields().paginate();
 
-    const freealncers = await features.query;
+    const freelancers = await features.query;
     res.status(200).json({
       status: "success",
       data: {
-        result: freealncers.length,
-        freealncers,
+        result: freelancers.length,
+        freelancers,
       },
     });
   } catch (err) {

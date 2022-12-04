@@ -10,6 +10,6 @@ const {
 
 // Client Register
 router.route("/add").post(userGuard, upload.single("file"), addClientInfo);
-router.route("/").get(getAllClients);
+router.route("/").get(userGuard, getAllClients);
 
 module.exports = router;
