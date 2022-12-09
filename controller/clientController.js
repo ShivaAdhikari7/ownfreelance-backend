@@ -74,7 +74,7 @@ const getAllClients = async (req, res) => {
       req.query
     );
 
-    features.filter().sort().limitFields().paginate();
+    features.searchClient().filter().sort().limitFields().paginate();
 
     const clients = await features.query;
     res.status(200).json({

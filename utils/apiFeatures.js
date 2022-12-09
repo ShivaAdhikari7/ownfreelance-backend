@@ -4,6 +4,33 @@ class APIFeatures {
     this.queryString = queryString;
   }
 
+  searchFreelancer() {
+    const keyword = this.queryString.keyword
+      ? {
+          jobTitle: {
+            $regex: this.queryString.keyword,
+            $options: "i",
+          },
+        }
+      : {};
+
+    this.query = this.query.find({ ...keyword });
+    return this;
+  }
+  searchClient() {
+    const keyword = this.queryString.keyword
+      ? {
+          headline: {
+            $regex: this.queryString.keyword,
+            $options: "i",
+          },
+        }
+      : {};
+
+    this.query = this.query.find({ ...keyword });
+    return this;
+  }
+
   filter() {
     const queryObj = { ...this.queryString };
     const excludedFields = ["page", "sort", "limit", "fields"];

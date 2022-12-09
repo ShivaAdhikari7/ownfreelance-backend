@@ -5,7 +5,7 @@ const Freelancer = require("../models/freelancerModel");
 const Client = require("../models/clientModel");
 
 // Generate JWT
-const generateToken = id => {
+const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "30d",
   });

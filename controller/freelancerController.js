@@ -78,7 +78,7 @@ const getAllFreelancers = async (req, res) => {
       req.query
     );
 
-    features.filter().sort().limitFields().paginate();
+    features.searchFreelancer().filter().sort().limitFields().paginate();
 
     const freelancers = await features.query;
     res.status(200).json({
