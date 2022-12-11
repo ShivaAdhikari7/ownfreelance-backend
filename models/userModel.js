@@ -18,6 +18,14 @@ const UserModel = new mongoose.Schema({
     type: String,
     required: true,
   },
+  savedPostsId: {
+    type: Array,
+    default: [],
+  },
+  savedPostsData: {
+    type: Array,
+    default: [],
+  },
   country: {
     type: String,
     required: true,

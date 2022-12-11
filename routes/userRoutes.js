@@ -6,6 +6,10 @@ const {
   registerUser,
   loginUser,
   getUserInfo,
+  updateUser,
+  deleteUser,
+  savePost,
+  getAllSavedPosts,
 } = require("../controller/userController");
 
 // Customer Register
@@ -15,5 +19,9 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 
 router.route("/me").get(userGuard, getUserInfo);
+router.route("/update").put(userGuard, updateUser);
+router.route("/delete").delete(userGuard, deleteUser);
+router.route("/save/:id").post(userGuard, savePost);
+router.route("/save/posts").get(userGuard, getAllSavedPosts);
 
 module.exports = router;

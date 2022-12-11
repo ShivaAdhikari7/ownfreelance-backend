@@ -109,8 +109,97 @@ const getUserInfo = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    if (!userId) throw new Error("User doesn't exists.");
+
+    const updatedUserData = await User.findByIdAndUpdate(userId, req.body, {
+      new: true,
+    });
+
+    res.json({ updatedUserData: updatedUserData });
+  } catch (err) {
+    res.json({ errorMessage: err.message });
+  }
+};
+const deleteUser = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    if (!userId) throw new Error("User doesn't exists.");
+
+    await User.findByIdAndDelete(userId);
+    res.json({ status: "success" });
+  } catch (err) {
+    res.json({ errorMessage: err.message });
+  }
+};
+
+const savePost = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    let postData;
+    postData = await Client.findById(postId).populate({
+      path: "userId",
+      select: "-password -verified",
+    });
+
+    if (!postData) {
+      postData = await Freelancer.findById(postId).populate({
+        path: "userId",
+        select: "-password -verified",
+      });
+    }
+
+    if (!postData) {
+      res.status(400);
+      throw new Error("No data found");
+    }
+
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      res.status(400);
+      throw new Error("User not found");
+    }
+    console.log(user.savedPostsId);
+    console.log(user.savedPostsId.includes(postId));
+
+    if (!user.savedPostsId.includes(postId)) {
+      await user.updateOne({ $push: { savedPostsData: postData } });
+      await user.updateOne({ $push: { savedPostsId: postId } });
+      res.status(200).json("The post has been saved");
+    } else {
+      await user.updateOne({ $pull: { savedPostsId: postId } });
+      await user.updateOne({ $pull: { savedPostsData: postData } });
+
+      res.status(200).json("The post has been removed from the saved library.");
+    }
+  } catch (err) {
+    res.json({ err: err.message });
+  }
+};
+const getAllSavedPosts = async (req, res) => {
+  const user = await User.findById(req.user.id);
+
+  if (!user) {
+    throw new Error("No user found");
+  }
+
+  const savedData = await User.findById(user._id).select("savedPostsData");
+  res.status(200).json({
+    savedData,
+  });
+};
+
 module.exports = {
   registerUser,
   loginUser,
   getUserInfo,
+  updateUser,
+  deleteUser,
+  savePost,
+  getAllSavedPosts,
 };
