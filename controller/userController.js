@@ -5,7 +5,7 @@ const Freelancer = require("../models/freelancerModel");
 const Client = require("../models/clientModel");
 
 // Generate JWT
-const generateToken = (id) => {
+const generateToken = id => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "30d",
   });
@@ -80,6 +80,7 @@ const loginUser = async (req, res) => {
     res.json({ message: err.message, stack: err.stack });
   }
 };
+
 const getUserInfo = async (req, res) => {
   try {
     if (!req.user) {

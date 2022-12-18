@@ -96,4 +96,24 @@ const getAllFreelancers = async (req, res) => {
   }
 };
 
-module.exports = { addFreelancerInfo, getAllFreelancers };
+const getFreelancerById = async (req, res) => {
+  try {
+    if (!req.params.id) {
+      res.status(400);
+      throw new Error("No any id provided.");
+    }
+
+    let user;
+
+    user = await Freelancer.findById(req.params.id).populate({
+      path: "userId",
+      select: "-password -verified",
+    });
+
+    res.send({ user });
+  } catch (err) {
+    res.status(400).send({ errMsg: err.message });
+  }
+};
+
+module.exports = { addFreelancerInfo, getAllFreelancers, getFreelancerById };
