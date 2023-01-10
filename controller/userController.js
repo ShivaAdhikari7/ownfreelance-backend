@@ -102,6 +102,10 @@ const getUserInfo = async (req, res) => {
         path: "userId",
         select: "-password -verified",
       });
+
+      if (!user) {
+        user = await User.findById(req.user._id);
+      }
     }
 
     res.send({ user });
@@ -125,6 +129,7 @@ const updateUser = async (req, res) => {
     res.json({ errorMessage: err.message });
   }
 };
+
 const deleteUser = async (req, res) => {
   try {
     const userId = req.user.id;

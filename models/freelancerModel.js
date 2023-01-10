@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const Freelancer = new mongoose.Schema({
+const FreelancerModel = new mongoose.Schema({
   userType: {
     type: String,
     required: true,
@@ -42,4 +42,6 @@ const Freelancer = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Freelancer", Freelancer);
+const Freelancer = mongoose.model("Freelancer", FreelancerModel);
+
+module.exports = Freelancer;
