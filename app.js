@@ -19,6 +19,8 @@ app.use("/freelancer", require("./routes/freelancerRoutes"));
 app.use("/client", require("./routes/clientRoutes"));
 app.use("/otp", require("./routes/otpRoutes"));
 app.use("/proposal", require("./routes/proposalRoutes"));
+app.use("/conversation", require("./routes/conversationRoutes"));
+app.use("/message", require("./routes/messageRoutes"));
 
 app.listen(90, () => {
   console.log("Listening at port 90.");
