@@ -10,6 +10,10 @@ const {
   deleteUser,
   savePost,
   getAllSavedPosts,
+  getUserInformation,
+  getAllUsers,
+  getFriendInfo,
+  getallUsersId,
 } = require("../controller/userController");
 
 // Customer Register
@@ -17,6 +21,12 @@ router.post("/register", registerUser);
 
 // Customer Login
 router.post("/login", loginUser);
+
+router.get("/", getUserInformation);
+router.get("/all", getAllUsers);
+router.get("/friends/:id", getFriendInfo);
+
+router.get("/getIds", getallUsersId);
 
 router.route("/me").get(userGuard, getUserInfo);
 router.route("/update").put(userGuard, updateUser);

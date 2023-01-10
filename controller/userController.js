@@ -5,7 +5,7 @@ const Freelancer = require("../models/freelancerModel");
 const Client = require("../models/clientModel");
 
 // Generate JWT
-const generateToken = id => {
+const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "30d",
   });
@@ -194,6 +194,79 @@ const getAllSavedPosts = async (req, res) => {
     savedData,
   });
 };
+const getUserInformation = async (req, res) => {
+  try {
+    let user;
+    user = await Freelancer.findOne({
+      userId: req.query.userId,
+    }).populate({
+      path: "userId",
+      select: "-password -verified",
+    });
+
+    if (!user) {
+      user = await Client.findOne({ userId: req.query.userId }).populate({
+        path: "userId",
+        select: "-password -verified",
+      });
+    }
+    res.send({ user });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+const getAllUsers = async (req, res) => {
+  try {
+    const usersId = [];
+    const user = await User.find({});
+
+    res.send({ user });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const getFriendInfo = async (req, res) => {
+  try {
+    let user;
+    user = await Freelancer.findOne({
+      _id: req.params.id,
+    }).populate({
+      path: "userId",
+      select: "-password -verified",
+    });
+
+    if (!user) {
+      user = await Client.findOne({ _id: req.params.id }).populate({
+        path: "userId",
+        select: "-password -verified",
+      });
+    }
+    res.send({ user });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+const getallUsersId = async (req, res) => {
+  try {
+    const user1 = await Freelancer.find({})
+      .select("_id profilePictureUrl")
+      .populate({
+        path: "userId",
+        select: "firstName lastName",
+      });
+    const user2 = await Client.find({}).select("_id").populate({
+      path: "userId",
+      select: "firstName lastName -_id",
+    });
+    const user = [...user2, ...user1];
+    res.send({ user });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
 
 module.exports = {
   registerUser,
@@ -203,4 +276,8 @@ module.exports = {
   deleteUser,
   savePost,
   getAllSavedPosts,
+  getUserInformation,
+  getAllUsers,
+  getFriendInfo,
+  getallUsersId,
 };
